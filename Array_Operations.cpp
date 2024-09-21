@@ -1,3 +1,20 @@
+/*
+ * This program demonstrates basic array manipulation in C++.
+ * It provides functionality to:
+ * 1. Insert an element at a specified index in the array.
+ * 2. Delete an element from a specified index in the array.
+ * 3. Print the current elements of the array.
+ *
+ * The program uses a class `MyArray` that contains methods for:
+ * - `insertAt`: Inserts a new element and shifts the subsequent elements to the right.
+ * - `deleteAt`: Removes an element and shifts the remaining elementsto the left.
+ * - `printArr`: Displays the elements of the array.
+ *
+ * The main function initializes an array with 15 elements, prompts the user
+ * for an index to insert a new element, and another index to delete an element,
+ * displaying the array before and after each operation.
+ */
+
 #include <iostream>
 
 class MyArray {
