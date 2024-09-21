@@ -11,10 +11,6 @@
  * - `deleteAt`: Removes an element and shifts the remaining elements to the left.
  * - `printArr`: Displays the elements of the array.
  * - `search`: Searches for an element and returns its index.
- *
- * The main function initializes an array with 15 elements, prompts the user
- * for an index to insert a new element, another index to delete an element,
- * and an element to search, displaying the array before and after each operation.
  */
 
 #include <iostream>
