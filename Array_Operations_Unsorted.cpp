@@ -4,21 +4,32 @@
  * 1. Insert an element at a specified index in the array.
  * 2. Delete an element from a specified index in the array.
  * 3. Print the current elements of the array.
+ * 4. Search for an element in the array and return its index.
  *
  * The program uses a class `MyArray` that contains methods for:
  * - `insertAt`: Inserts a new element and shifts the subsequent elements to the right.
- * - `deleteAt`: Removes an element and shifts the remaining elementsto the left.
+ * - `deleteAt`: Removes an element and shifts the remaining elements to the left.
  * - `printArr`: Displays the elements of the array.
+ * - `search`: Searches for an element and returns its index.
  *
  * The main function initializes an array with 15 elements, prompts the user
- * for an index to insert a new element, and another index to delete an element,
- * displaying the array before and after each operation.
+ * for an index to insert a new element, another index to delete an element,
+ * and an element to search, displaying the array before and after each operation.
  */
 
 #include <iostream>
 
 class MyArray {
 public:
+    int search(int arr[], int size, int key) {
+        for (int i = 0; i < size; i++) {
+            if (arr[i] == key) {
+                return i; // Return the index if the key is found
+            }
+        }
+        return -1; // Return -1 if the key is not found
+    }
+
     void deleteAt(int arr[], int &size, int index) {
         if (index < 0 || index >= size) {
             std::cout << "Index out of bounds!" << std::endl;
@@ -69,6 +80,16 @@ int main() {
     std::cin >> index;
     myArr.deleteAt(arr, size, index);
     myArr.printArr(arr, size);
+
+    int key;
+    std::cout << "Enter the key you need the index for:" << std::endl;
+    std::cin >> key;
+    int searchedIndex = myArr.search(arr, size, key);
+    if (searchedIndex == -1) {
+        std::cout << "Element not found" << std::endl;
+    } else {
+        std::cout << "Element found at index: " << searchedIndex << std::endl;
+    }
 
     return 0;
 }
