@@ -24,10 +24,10 @@ public:
     int search(int arr[], int size, int key) {
         for (int i = 0; i < size; i++) {
             if (arr[i] == key) {
-                return i; // Return the index if the key is found
+                return i;
             }
         }
-        return -1; // Return -1 if the key is not found
+        return -1;
     }
 
     void deleteAt(int arr[], int &size, int index) {
