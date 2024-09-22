@@ -1,16 +1,14 @@
 /*
- * Singly Linked List Implementation
+ * Circular Linked List Implementation
  *
- * This program implements a singly linked list in C++ with functionalities to:
- * 1. Create and initialize nodes in the linked list.
- * 2. Traverse and print the contents of the linked list.
- * 3. Insert a new node at a specific position.
- * 4. Delete a node from a specific position.
+ * This program implements a circular linked list with functionalities to:
+ * 1. Create nodes.
+ * 2. Print the list.
+ * 3. Insert a node at a specified position.
+ * 4. Delete a node from a specified position.
  *
- * The program creates a linked list with five nodes and allows the user to:
- * - Insert a node at a given position.
- * - Delete a node from a given position.
- * - Display the linked list after each operation.
+ * The list is circular, meaning the last node points back to the first,
+ * allowing for continuous traversal.
  *
  * Time Complexities:
  * - Creating a node: O(1)
@@ -41,13 +39,21 @@ struct node *createNode(int data)
 
 void printList(struct node *root)
 {
-    cout << "Singly Linked List Traversal now is:\n";
-    while (root != nullptr)
+    if (root == nullptr)
     {
-        cout << root->data << "-->";
-        root = root->next;
+        cout << "List is empty.\n";
+        return;
     }
-    cout << "null \n";
+    cout << "Circular Linked List Traversal now is:\n";
+    struct node *head = root;
+    cout << head->data << "-->";
+    head = head->next;
+    while (head != root)
+    {
+        cout << head->data << "-->";
+        head = head->next;
+    }
+    cout << "back to head node\n";
 }
 
 struct node *insertNode(struct node *root, int data, int pos)
@@ -55,21 +61,21 @@ struct node *insertNode(struct node *root, int data, int pos)
     struct node *newNode = createNode(data);
     if (pos == 1)
     {
+        struct node *current = root;
+        while (current->next != root)
+        {
+            current = current->next;
+        }
         newNode->next = root;
+        current->next = newNode;
         return newNode;
     }
     struct node *current = root;
     int i = 1;
-    while (current != nullptr && i < pos - 1)
+    while (current->next != root && i < pos - 1)
     {
         current = current->next;
         i++;
-    }
-    if (current == nullptr)
-    {
-        cout << "Position out of bounds\n";
-        delete newNode;
-        return root;
     }
     newNode->next = current->next;
     current->next = newNode;
@@ -86,22 +92,27 @@ struct node *deleteNode(struct node *root, int pos)
     if (pos == 1)
     {
         struct node *temp = root;
-        root = root->next;
-        delete temp;
-        return root;
+        while (temp->next != root)
+        {
+            temp = temp->next;
+        }
+        temp->next = root->next;
+        struct node *newHead = root->next;
+        delete root;
+        return newHead;
     }
     struct node *current = root;
     struct node *previous = nullptr;
     int i = 1;
-    while (current != nullptr && i < pos)
+    while (current->next != root && i < pos)
     {
         previous = current;
         current = current->next;
         i++;
     }
-    if (current == nullptr)
+    if (current == root)
     {
-        cout << "Position out of bounds\n";
+        cout << "Position out of range\n";
         return root;
     }
     previous->next = current->next;
@@ -121,6 +132,8 @@ int main()
     p1->next = p2;
     p2->next = p3;
     p3->next = p4;
+    p4->next = head; // Closing the circular link
+
     printList(head);
 
     int pos;
