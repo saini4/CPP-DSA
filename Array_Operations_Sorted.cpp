@@ -1,3 +1,18 @@
+/*
+ * This program demonstrates basic array manipulation in C++.
+ * It provides functionality to:
+ * 1. Insert an element at a specified index in the sorted array.
+ * 2. Delete an element from a specified index in the sorted array.
+ * 3. Print the current elements of the sorted array.
+ * 4. Search for an element in the sorted array and return its index.
+ *
+ * The program uses a class `MyArray` that contains methods for:
+ * - `insertAt`: Inserts a new element and shifts the subsequent elements to the right.
+ * - `deleteAt`: Removes an element and shifts the remaining elements to the left.
+ * - `printArr`: Displays the elements of the array.
+ * - `search`: Searches for an element and returns its index.
+ */
+
 #include <iostream>
 
 class MyArray
