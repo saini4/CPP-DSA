@@ -7,7 +7,6 @@ Time Complexity:
 Space Complexity: O(1) (in-place sorting)
 */
 
-// Online C++ compiler to run C++ program online
 #include <iostream>
 using namespace std;
 #define SIZE 10
