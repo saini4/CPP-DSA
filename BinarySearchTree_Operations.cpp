@@ -1,40 +1,39 @@
 /*
     This program implements a Binary Search Tree (BST) with the following operations:
-    
+
     1. **isBST()**:
        - Checks whether a tree is a valid BST.
        - Time Complexity: O(n), where n is the number of nodes in the tree.
        - Space Complexity: O(h), where h is the height of the tree (due to recursion stack).
-    
+
     2. **inOrder()**:
        - Traverses the tree in an in-order manner (left, root, right).
        - Time Complexity: O(n), where n is the number of nodes.
        - Space Complexity: O(h), where h is the height of the tree (recursion stack).
-    
+
     3. **searchBST()**:
        - Searches for a given key in the BST.
        - Time Complexity: O(h), where h is the height of the tree.
        - Space Complexity: O(1).
-    
+
     4. **insertBST()**:
        - Inserts a new key into the BST.
        - Time Complexity: O(h), where h is the height of the tree.
        - Space Complexity: O(1).
-    
+
     5. **pred()**:
        - Finds the predecessor (maximum value node in the left subtree).
        - Time Complexity: O(h), where h is the height of the tree.
        - Space Complexity: O(1).
-    
+
     6. **deleteBST()**:
        - Deletes a key from the BST.
        - Time Complexity: O(h), where h is the height of the tree.
        - Space Complexity: O(1).
-    
+
     7. **Main function**:
        - Demonstrates insertion, searching, deletion, and checking if the tree is a valid BST.
 */
-
 
 #include <iostream>
 using namespace std;
@@ -160,88 +159,49 @@ Node *deleteBST(Node *root, int key)
         return NULL;
     }
 
-    if (key == root->data && root->left == NULL && root->right == NULL)
+    if (key < root->data)
     {
-        cout << "its the only node in BST" << endl;
-        delete root;
-        return NULL;
+        cout << "Going left to delete " << key << endl;
+        root->left = deleteBST(root->left, key);
     }
-
-    Node *prev = NULL;
-    Node *curr = root;
-
-    while (curr != NULL && key != curr->data)
+    else if (key > root->data)
     {
-        prev = curr;
-        if (key < curr->data)
-        {
-            curr = curr->left;
-        }
-        else
-        {
-            curr = curr->right;
-        }
-    }
-
-    if (curr == NULL)
-    {
-        cout << "Element not found in the BST" << endl;
-        return root;
-    }
-
-    if (curr->left == NULL && curr->right == NULL)
-    {
-        cout << "\n"
-             << key << " is going to be removed from its position." << endl;
-        if (prev->left == curr)
-        {
-            prev->left = NULL;
-        }
-        else
-        {
-            prev->right = NULL;
-        }
-        delete curr;
-    }
-    else if (curr->left == NULL || curr->right == NULL)
-    {
-        cout << "\n"
-             << key << " is going to be removed from its position." << endl;
-        Node *child;
-        if (curr->left != NULL)
-        {
-            child = curr->left;
-        }
-        else
-        {
-            child = curr->right;
-        }
-        if (prev == NULL)
-        {
-            return child;
-        }
-        if (prev->left == curr)
-        {
-            prev->left = child;
-        }
-        else
-        {
-            prev->right = child;
-        }
-        delete curr;
+        cout << "Going right to delete " << key << endl;
+        root->right = deleteBST(root->right, key);
     }
     else
     {
-        cout << "\n"
-             << key << " is the node to be removed." << endl;
-        Node *temp = pred(curr);
-        cout << temp->data << " is the predecessor and going to be removed from its position first" << endl;
-        int predecessorValue = temp->data;
-        deleteBST(root, predecessorValue);
-        curr->data = predecessorValue;
-        cout << "BST after removal is:" << endl;
-    }
+        cout << "Found node " << key << " to delete" << endl;
 
+        if (root->left == NULL && root->right == NULL)
+        {
+            cout << "Deleting leaf node " << key << endl;
+            delete root;
+            return NULL;
+        }
+        else if (root->left == NULL)
+        {
+            cout << "Node " << key << " has only right child" << endl;
+            Node *temp = root->right;
+            delete root;
+            return temp;
+        }
+        else if (root->right == NULL)
+        {
+            cout << "Node " << key << " has only left child" << endl;
+            Node *temp = root->left;
+            delete root;
+            return temp;
+        }
+        else
+        {
+            cout << "Node " << key << " has two children" << endl;
+            Node *iPre = pred(root);
+            cout << "In-order predecessor is " << iPre->data << endl;
+            root->data = iPre->data;
+            root->left = deleteBST(root->left, iPre->data);
+        }
+    }
     return root;
 }
 
