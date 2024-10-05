@@ -161,43 +161,43 @@ Node *deleteBST(Node *root, int key)
 
     if (key < root->data)
     {
-        cout << "Going left to delete " << key << endl;
+        cout << "\nGoing left to delete " << key;
         root->left = deleteBST(root->left, key);
     }
     else if (key > root->data)
     {
-        cout << "Going right to delete " << key << endl;
+        cout << "\nGoing right to delete " << key;
         root->right = deleteBST(root->right, key);
     }
     else
     {
-        cout << "Found node " << key << " to delete" << endl;
+        cout << "\nFound node " << key << " to delete";
 
         if (root->left == NULL && root->right == NULL)
         {
-            cout << "Deleting leaf node " << key << endl;
+            cout << "\nDeleting leaf node " << key << endl;
             delete root;
             return NULL;
         }
         else if (root->left == NULL)
         {
-            cout << "Node " << key << " has only right child" << endl;
+            cout << "\nNode " << key << " has only right child" << endl;
             Node *temp = root->right;
             delete root;
             return temp;
         }
         else if (root->right == NULL)
         {
-            cout << "Node " << key << " has only left child" << endl;
+            cout << "\nNode " << key << " has only left child" << endl;
             Node *temp = root->left;
             delete root;
             return temp;
         }
         else
         {
-            cout << "Node " << key << " has two children" << endl;
+            cout << "\nNode " << key << " has two children" << endl;
             Node *iPre = pred(root);
-            cout << "In-order predecessor is " << iPre->data << endl;
+            cout << "In-order predecessor is " << iPre->data;
             root->data = iPre->data;
             root->left = deleteBST(root->left, iPre->data);
         }
@@ -234,8 +234,9 @@ int main()
     insertBST(root, 60);
     insertBST(root, 90);
     insertBST(root, 100);
+    insertBST(root, 5);
     inOrder(root);
-    root = deleteBST(root, 70);
+    root = deleteBST(root, 50);
     inOrder(root);
     return 0;
 }
