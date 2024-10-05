@@ -1,53 +1,107 @@
+/*
+    This program implements a Binary Search Tree (BST) with the following operations:
+    
+    1. **isBST()**:
+       - Checks whether a tree is a valid BST.
+       - Time Complexity: O(n), where n is the number of nodes in the tree.
+       - Space Complexity: O(h), where h is the height of the tree (due to recursion stack).
+    
+    2. **inOrder()**:
+       - Traverses the tree in an in-order manner (left, root, right).
+       - Time Complexity: O(n), where n is the number of nodes.
+       - Space Complexity: O(h), where h is the height of the tree (recursion stack).
+    
+    3. **searchBST()**:
+       - Searches for a given key in the BST.
+       - Time Complexity: O(h), where h is the height of the tree.
+       - Space Complexity: O(1).
+    
+    4. **insertBST()**:
+       - Inserts a new key into the BST.
+       - Time Complexity: O(h), where h is the height of the tree.
+       - Space Complexity: O(1).
+    
+    5. **pred()**:
+       - Finds the predecessor (maximum value node in the left subtree).
+       - Time Complexity: O(h), where h is the height of the tree.
+       - Space Complexity: O(1).
+    
+    6. **deleteBST()**:
+       - Deletes a key from the BST.
+       - Time Complexity: O(h), where h is the height of the tree.
+       - Space Complexity: O(1).
+    
+    7. **Main function**:
+       - Demonstrates insertion, searching, deletion, and checking if the tree is a valid BST.
+*/
+
+
 #include <iostream>
 using namespace std;
 
-class Node {
+class Node
+{
 public:
     int data;
     Node *left;
     Node *right;
 
-    Node(int data) {
+    Node(int data)
+    {
         this->data = data;
         this->left = NULL;
         this->right = NULL;
     }
 };
 
-int isBST(Node *root) {
+int isBST(Node *root)
+{
     static Node *prev = NULL;
 
-    if (root != NULL) {
-        if (!isBST(root->left)) {
+    if (root != NULL)
+    {
+        if (!isBST(root->left))
+        {
             return 0;
         }
-        if (prev != NULL && root->data <= prev->data) {
+        if (prev != NULL && root->data <= prev->data)
+        {
             return 0;
         }
         prev = root;
         return isBST(root->right);
-    } else {
+    }
+    else
+    {
         return 1;
     }
 }
 
-void inOrder(Node *root) {
-    if (root != NULL) {
+void inOrder(Node *root)
+{
+    if (root != NULL)
+    {
         inOrder(root->left);
         cout << root->data << "\t";
         inOrder(root->right);
     }
 }
 
-int searchBST(Node *root, int key) {
-    while (root != NULL) {
-        if (key == root->data) {
+int searchBST(Node *root, int key)
+{
+    while (root != NULL)
+    {
+        if (key == root->data)
+        {
             cout << "Element " << key << " found in BST" << endl;
             return 1;
         }
-        if (key < root->data) {
+        if (key < root->data)
+        {
             root = root->left;
-        } else {
+        }
+        else
+        {
             root = root->right;
         }
     }
@@ -55,31 +109,144 @@ int searchBST(Node *root, int key) {
     return 0;
 }
 
-void insertBST(Node *root, int key) {
+void insertBST(Node *root, int key)
+{
     Node *newNode = new Node(key);
     Node *prev = NULL;
 
-    while (root != NULL) {
-        if (key == root->data) {
+    while (root != NULL)
+    {
+        if (key == root->data)
+        {
             cout << "Element " << key << " is already in BST" << endl;
             return;
         }
         prev = root;
-        if (key < root->data) {
+        if (key < root->data)
+        {
             root = root->left;
-        } else {
+        }
+        else
+        {
             root = root->right;
         }
     }
 
-    if (key < prev->data) {
+    if (key < prev->data)
+    {
         prev->left = newNode;
-    } else {
+    }
+    else
+    {
         prev->right = newNode;
     }
 }
 
-int main() {
+Node *pred(Node *root)
+{
+    root = root->left;
+    while (root->right != NULL)
+    {
+        root = root->right;
+    }
+    return root;
+}
+
+Node *deleteBST(Node *root, int key)
+{
+    if (root == NULL)
+    {
+        cout << "Element not found in the BST" << endl;
+        return NULL;
+    }
+
+    if (key == root->data && root->left == NULL && root->right == NULL)
+    {
+        cout << "its the only node in BST" << endl;
+        delete root;
+        return NULL;
+    }
+
+    Node *prev = NULL;
+    Node *curr = root;
+
+    while (curr != NULL && key != curr->data)
+    {
+        prev = curr;
+        if (key < curr->data)
+        {
+            curr = curr->left;
+        }
+        else
+        {
+            curr = curr->right;
+        }
+    }
+
+    if (curr == NULL)
+    {
+        cout << "Element not found in the BST" << endl;
+        return root;
+    }
+
+    if (curr->left == NULL && curr->right == NULL)
+    {
+        cout << "\n"
+             << key << " is going to be removed from its position." << endl;
+        if (prev->left == curr)
+        {
+            prev->left = NULL;
+        }
+        else
+        {
+            prev->right = NULL;
+        }
+        delete curr;
+    }
+    else if (curr->left == NULL || curr->right == NULL)
+    {
+        cout << "\n"
+             << key << " is going to be removed from its position." << endl;
+        Node *child;
+        if (curr->left != NULL)
+        {
+            child = curr->left;
+        }
+        else
+        {
+            child = curr->right;
+        }
+        if (prev == NULL)
+        {
+            return child;
+        }
+        if (prev->left == curr)
+        {
+            prev->left = child;
+        }
+        else
+        {
+            prev->right = child;
+        }
+        delete curr;
+    }
+    else
+    {
+        cout << "\n"
+             << key << " is the node to be removed." << endl;
+        Node *temp = pred(curr);
+        cout << temp->data << " is the predecessor and going to be removed from its position first" << endl;
+        int predecessorValue = temp->data;
+        deleteBST(root, predecessorValue);
+        curr->data = predecessorValue;
+        cout << "BST after removal is:" << endl;
+    }
+
+    return root;
+}
+
+int main()
+{
     Node *root = new Node(50);
     Node *p1 = new Node(30);
     Node *p2 = new Node(70);
@@ -94,16 +261,21 @@ int main() {
     inOrder(root);
     cout << endl;
 
-    if (isBST(root)) {
+    if (isBST(root))
+    {
         cout << "Tree is BST" << endl;
-    } else {
+    }
+    else
+    {
         cout << "Tree isn't BST" << endl;
     }
 
     searchBST(root, 40);
     insertBST(root, 60);
     insertBST(root, 90);
-
+    insertBST(root, 100);
+    inOrder(root);
+    root = deleteBST(root, 70);
     inOrder(root);
     return 0;
 }
